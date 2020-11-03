@@ -196,7 +196,7 @@ function parseMapData(string $file, array $mapdata) : void {
     foreach ($mapdata as $name => $data) {
 
         if (!is_array($data)) {
-            trigger_error("TranslationsParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+            trigger_error("MapDataParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
             return;
         }
 
@@ -210,15 +210,15 @@ function parseMapData(string $file, array $mapdata) : void {
         }
         if (count($fieldName['MapData']['require']) != $totalKeys) {
             foreach ($fieldName['MapData']['require'] as $key) {
-                if (!isset($tran[$key])) {
-                    trigger_error("TranslationsParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                if (!isset($data[$key])) {
+                    trigger_error("MapDataParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
                     return;
                 }
             }
         }
         foreach ($data as $key => $val) {
             if (!in_array($key, $fieldName['MapData']['optional'], true) && !in_array($key, $fieldName['MapData']['require'], true)) {
-                trigger_error("TranslationsParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                trigger_error("MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
                 return;
             }
         }
@@ -400,9 +400,11 @@ $fieldName = [
     ],
     'MapData' => [
         'require' => [
-            'm_Description', 'm_CertainTimes', 'm_Price', 'm_PricePartyBlock', 'm_MinPlayers', 'm_MaxPlayers', 'm_MaxCooldown', 'm_NominateOnly', 'm_VipOnly', 'm_AdminOnly', 'm_RefundRatio'
+            'm_Description', 'm_CertainTimes', 'm_Price', 'm_PricePartyBlock', 'm_MinPlayers', 'm_MaxPlayers', 'm_MaxCooldown', 'm_NominateOnly', 'm_VipOnly', 'm_AdminOnly'
         ],
-        'optional' => []
+        'optional' => [
+            'm_RefundRatio'
+        ]
     ]
 ];
 foreach ($KeyValues as $kv) {
