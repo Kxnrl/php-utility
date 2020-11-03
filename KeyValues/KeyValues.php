@@ -184,6 +184,47 @@ function parseTranslations(string $file, array $translations) : void {
     }
 }
 
+function parseMapData(string $file, array $mapdata) : void {
+
+    if (!is_array($mapdata)) {
+        trigger_error("MapDataParser: MapData is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+        return;
+    }
+
+    global $fieldName;
+
+    foreach ($mapdata as $name => $data) {
+
+        if (!is_array($data)) {
+            trigger_error("TranslationsParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+            return;
+        }
+
+        // foreach key
+        $totalKeys = 0;
+        // check requires
+        foreach ($data as $key => $val) {
+            if (in_array($key, $fieldName['MapData']['require'], true)) {
+                $totalKeys++;
+            }
+        }
+        if (count($fieldName['MapData']['require']) != $totalKeys) {
+            foreach ($fieldName['MapData']['require'] as $key) {
+                if (!isset($tran[$key])) {
+                    trigger_error("TranslationsParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                    return;
+                }
+            }
+        }
+        foreach ($data as $key => $val) {
+            if (!in_array($key, $fieldName['MapData']['optional'], true) && !in_array($key, $fieldName['MapData']['require'], true)) {
+                trigger_error("TranslationsParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                return;
+            }
+        }
+    }
+}
+
 // a simple parser for Valve's KeyValue format
 // https://developer.valvesoftware.com/wiki/KeyValues
 //
@@ -356,6 +397,12 @@ $fieldName = [
                 ]
             ]
         ]
+    ],
+    'MapData' => [
+        'require' => [
+            'm_Description', 'm_CertainTimes', 'm_Price', 'm_PricePartyBlock', 'm_MinPlayers', 'm_MaxPlayers', 'm_MaxCooldown', 'm_NominateOnly', 'm_VipOnly', 'm_AdminOnly'
+        ],
+        'optional' => []
     ]
 ];
 foreach ($KeyValues as $kv) {
@@ -372,6 +419,8 @@ foreach ($KeyValues as $kv) {
         parseTranslations($local, $array['Console_T']);
     } else if (isset($array['BossHP'])) {
         parseBossHp($local, $array['BossHP']);
+    } else if (isset($array['MapData'])) {
+        parseMapData($local, $array['MapData']);
     }
 
     $validated++;
