@@ -366,7 +366,7 @@ $fieldName = [
             'name', 'shortname', 'buttonclass', 'filtername', 'hasfiltername', 'hammerid', 'mode', 'glow', 'hud', 'autotransfer', 'maxuses', 'cooldown', 'maxamount'
         ],
         'optional' => [
-            'startcd', 'triggerid', 'isWall', 'level', 'children', 'team'
+            'startcd', 'triggerid', 'containerid', 'isWall', 'level', 'children', 'team'
         ]
     ],
     'Console_T' => [
