@@ -135,18 +135,22 @@ function parseBossHp(string $file, array $BossHp) : void {
             $uniqueCounter[] = $counter['iterator'];
 
             // counter unique
-            if (isset($counter['counter']) && strlen($counter['counter']) > 2 && in_array($counter['counter'], $uniqueCounter, true)) {
-                trigger_error("BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+            if (isset($counter['counter']) && strlen($counter['counter']) > 2) {
+                if (in_array($counter['counter'], $uniqueCounter, true)) {
+                    trigger_error("BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                    return;
+                }
+                $uniqueCounter[] = $counter['counter'];
             }
-            $uniqueCounter[] = $counter['counter'];
 
             // backup unique
-            if (isset($counter['backup']) && strlen($counter['backup']) > 2 && in_array($counter['backup'], $uniqueCounter, true)) {
-                trigger_error("BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+            if (isset($counter['backup']) && strlen($counter['backup']) > 2) {
+                if (in_array($counter['backup'], $uniqueCounter, true)) {
+                    trigger_error("BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                    return;
+                }
+                $uniqueCounter[] = $counter['backup'];
             }
-            $uniqueCounter[] = $counter['backup'];
 
             // foreach key
             $totalKeys = 0;
