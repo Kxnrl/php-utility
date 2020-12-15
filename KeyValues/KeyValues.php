@@ -73,7 +73,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
         foreach ($BossHp['breakable'] as $section => $breakable) {
 
             if (!is_array($breakable)) {
-                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file,;
+                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
             }
 
             // iterator unique
