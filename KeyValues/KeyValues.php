@@ -82,7 +82,7 @@ function parseBossHp(string $file, array $BossHp) : void {
             }
 
             // iterator unique
-            if (in_array($breakable['iterator'], $uniqueBreakable, true)) {
+            if (in_array($breakable['targetname'], $uniqueBreakable, true)) {
                 trigger_error("BossHpParser: key '$section' has duplicate targetname value '". $breakable['targetname'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
                 return;
             }
