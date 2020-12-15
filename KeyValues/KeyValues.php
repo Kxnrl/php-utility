@@ -464,8 +464,8 @@ if ($total > 0) {
     foreach($errorReports as $error) {
         print_r('Reported File '. $error['file'] . ' with error: ' . $error['errs'] . PHP_EOL);
     }
-    trigger_error(PHP_EOL . PHP_EOL . $total . " errors detected while checking files.", E_USER_ERROR);
-    exit(-1);
+    //trigger_error(PHP_EOL . PHP_EOL . $total . " errors detected while checking files.", E_USER_ERROR);
+    exit(1);
 }
 
 print_r("Validated $validated / " . count($KeyValues) . " KeyValue files." . PHP_EOL);
