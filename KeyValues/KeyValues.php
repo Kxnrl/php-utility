@@ -13,11 +13,10 @@ function errorHandler(int $errno , string $error) : bool {
     exit(1);
 }
 
-function parseEntities(string $file, array $entities) : void {
+function parseEntities(string $file, array $entities) : ?string {
 
     if (!is_array($entities)) {
-        trigger_error("EntitiesParser: entities is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-        return;
+        return "EntitiesParser: entities is not an array." . PHP_EOL . 'file: ' . $file;
     }
 
     global $fieldName;
@@ -25,8 +24,7 @@ function parseEntities(string $file, array $entities) : void {
     foreach ($entities as $section => $entity) {
 
         if (!is_array($entity)) {
-            trigger_error("EntitiesParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-            return;
+            return "EntitiesParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
         }
 
         // foreach key
@@ -40,26 +38,25 @@ function parseEntities(string $file, array $entities) : void {
         if (count($fieldName['entities']['require']) != $totalKeys) {
             foreach ($fieldName['entities']['require'] as $key) {
                 if (!isset($entity[$key])) {
-                    trigger_error("EntitiesParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "EntitiesParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
         }
 
         foreach ($entity as $key => $val) {
             if (!in_array($key, $fieldName['entities']['optional'], true) && !in_array($key, $fieldName['entities']['require'], true)) {
-                trigger_error("EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
+
+    return null;
 }
 
-function parseBossHp(string $file, array $BossHp) : void {
+function parseBossHp(string $file, array $BossHp) : ?string {
 
     if (!is_array($BossHp)) {
-        trigger_error("BossHpParser: entities is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-        return;
+        return "BossHpParser: entities is not an array." . PHP_EOL . 'file: ' . $file;
     }
 
     global $fieldName;
@@ -70,21 +67,18 @@ function parseBossHp(string $file, array $BossHp) : void {
     if (isset($BossHp['breakable'])) {
 
         if (!is_array($BossHp['breakable'])) {
-            trigger_error("BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-            return;
+            return "BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file;
         }
 
         foreach ($BossHp['breakable'] as $section => $breakable) {
 
             if (!is_array($breakable)) {
-                trigger_error("BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file,;
             }
 
             // iterator unique
             if (in_array($breakable['targetname'], $uniqueBreakable, true)) {
-                trigger_error("BossHpParser: key '$section' has duplicate targetname value '". $breakable['targetname'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "BossHpParser: key '$section' has duplicate targetname value '". $breakable['targetname'] ."'." . PHP_EOL . 'file: ' . $file;
             }
             $uniqueBreakable[] = $breakable['targetname'];
 
@@ -99,15 +93,13 @@ function parseBossHp(string $file, array $BossHp) : void {
             if (count($fieldName['BossHP']['optional']['breakable']['require']) != $totalKeys) {
                 foreach ($fieldName['BossHP']['optional']['breakable']['require'] as $key) {
                     if (!isset($breakable[$key])) {
-                        trigger_error("BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                        return;
+                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                     }
                 }
             }
             foreach ($breakable as $key => $val) {
                 if (!in_array($key, $fieldName['BossHP']['optional']['breakable']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['breakable']['require'], true)) {
-                    trigger_error("BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
         }
@@ -116,29 +108,25 @@ function parseBossHp(string $file, array $BossHp) : void {
     if (isset($BossHp['counter'])) {
 
         if (!is_array($BossHp['counter'])) {
-            trigger_error("BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-            return;
+            return "BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file;
         }
 
         foreach ($BossHp['counter'] as $section => $counter) {
 
             if (!is_array($counter)) {
-                trigger_error("BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
             }
 
             // iterator unique
             if (in_array($counter['iterator'], $uniqueCounter, true)) {
-                trigger_error("BossHpParser: key '$section' has duplicate iterator value '". $counter['iterator'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "BossHpParser: key '$section' has duplicate iterator value '". $counter['iterator'] ."'." . PHP_EOL . 'file: ' . $file;
             }
             $uniqueCounter[] = $counter['iterator'];
 
             // counter unique
             if (isset($counter['counter']) && strlen($counter['counter']) > 2) {
                 if (in_array($counter['counter'], $uniqueCounter, true)) {
-                    trigger_error("BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'." . PHP_EOL . 'file: ' . $file;
                 }
                 $uniqueCounter[] = $counter['counter'];
             }
@@ -146,8 +134,7 @@ function parseBossHp(string $file, array $BossHp) : void {
             // backup unique
             if (isset($counter['backup']) && strlen($counter['backup']) > 2) {
                 if (in_array($counter['backup'], $uniqueCounter, true)) {
-                    trigger_error("BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'." . PHP_EOL . 'file: ' . $file;
                 }
                 $uniqueCounter[] = $counter['backup'];
             }
@@ -163,26 +150,25 @@ function parseBossHp(string $file, array $BossHp) : void {
             if (count($fieldName['BossHP']['optional']['counter']['require']) != $totalKeys) {
                 foreach ($fieldName['BossHP']['optional']['counter']['require'] as $key) {
                     if (!isset($counter[$key])) {
-                        trigger_error("BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                        return;
+                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                     }
                 }
             }
             foreach ($counter as $key => $val) {
                 if (!in_array($key, $fieldName['BossHP']['optional']['counter']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['counter']['require'], true)) {
-                    trigger_error("BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
         }
     }
+
+    return null;
 }
 
-function parseTranslations(string $file, array $translations) : void {
+function parseTranslations(string $file, array $translations) : ?string {
 
     if (!is_array($translations)) {
-        trigger_error("TranslationsParser: translations is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-        return;
+        return "TranslationsParser: translations is not an array." . PHP_EOL . 'file: ' . $file;
     }
 
     global $fieldName;
@@ -190,8 +176,7 @@ function parseTranslations(string $file, array $translations) : void {
     foreach ($translations as $section => $tran) {
 
         if (!is_array($tran)) {
-            trigger_error("TranslationsParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-            return;
+            return "TranslationsParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
         }
 
         // foreach key
@@ -205,25 +190,24 @@ function parseTranslations(string $file, array $translations) : void {
         if (count($fieldName['Console_T']['require']) != $totalKeys) {
             foreach ($fieldName['Console_T']['require'] as $key) {
                 if (!isset($tran[$key])) {
-                    trigger_error("TranslationsParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "TranslationsParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
         }
         foreach ($tran as $key => $val) {
             if (!in_array($key, $fieldName['Console_T']['optional'], true) && !in_array($key, $fieldName['Console_T']['require'], true)) {
-                trigger_error("TranslationsParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "TranslationsParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
+
+    return null;
 }
 
-function parseMapData(string $file, array $mapdata) : void {
+function parseMapData(string $file, array $mapdata) : ?string {
 
     if (!is_array($mapdata)) {
-        trigger_error("MapDataParser: MapData is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-        return;
+        return "MapDataParser: MapData is not an array." . PHP_EOL . 'file: ' . $file;
     }
 
     global $fieldName;
@@ -231,8 +215,7 @@ function parseMapData(string $file, array $mapdata) : void {
     foreach ($mapdata as $name => $data) {
 
         if (!is_array($data)) {
-            trigger_error("MapDataParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-            return;
+            return "MapDataParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file;
         }
 
         // foreach key
@@ -246,18 +229,18 @@ function parseMapData(string $file, array $mapdata) : void {
         if (count($fieldName['MapData']['require']) != $totalKeys) {
             foreach ($fieldName['MapData']['require'] as $key) {
                 if (!isset($data[$key])) {
-                    trigger_error("MapDataParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                    return;
+                    return "MapDataParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
                 }
             }
         }
         foreach ($data as $key => $val) {
             if (!in_array($key, $fieldName['MapData']['optional'], true) && !in_array($key, $fieldName['MapData']['require'], true)) {
-                trigger_error("MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
-                return;
+                return "MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
+
+    return null;
 }
 
 // a simple parser for Valve's KeyValue format
@@ -442,25 +425,47 @@ $fieldName = [
         ]
     ]
 ];
+
+$errorReports = [];
+
 foreach ($KeyValues as $kv) {
 
     $local = (__DIR__ . '/' . $kv);
     $array = KvParser($local);
 
+    $res = null;
+
     if (!is_array($array)) {
         trigger_error("Failed to decode file [$kv] -> is_array (Array) return false.", E_USER_NOTICE);
         continue;
     } else if (isset($array['entities'])) {
-        parseEntities($local, $array['entities']);
+        $res = parseEntities($local, $array['entities']);
     } else if (isset($array['Console_T'])) {
-        parseTranslations($local, $array['Console_T']);
+        $res = parseTranslations($local, $array['Console_T']);
     } else if (isset($array['BossHP'])) {
-        parseBossHp($local, $array['BossHP']);
+        $res = parseBossHp($local, $array['BossHP']);
     } else if (isset($array['MapData'])) {
-        parseMapData($local, $array['MapData']);
+        $res = parseMapData($local, $array['MapData']);
+    }
+
+    if ($res !== null) {
+        $errorReports[] = [
+            'file' => $local,
+            'errs' => $res
+        ];
     }
 
     $validated++;
+}
+
+$total = count($errorReports);
+if ($total > 0) {
+
+    foreach($errorReports as $error) {
+        print_r('Reported File '. $error['file'] . ' with error: ' . $error['errs'] . PHP_EOL);
+    }
+    trigger_error(PHP_EOL . PHP_EOL . $total . " errors detected while checking files.", E_USER_ERROR);
+    exit(-1);
 }
 
 print_r("Validated $validated / " . count($KeyValues) . " KeyValue files." . PHP_EOL);
