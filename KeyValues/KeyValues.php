@@ -413,6 +413,12 @@ $fieldName = [
                 'optional' => [
                     'displayname', 'hpcounts', 'cashonly', 'multiparts'
                 ]
+            ],
+            'monster' => [
+                'require' => [
+                    'displayname', 'hammerid'
+                ],
+                'optional' = []
             ]
         ]
     ],
