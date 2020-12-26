@@ -418,7 +418,7 @@ $fieldName = [
                 'require' => [
                     'displayname', 'hammerid'
                 ],
-                'optional' = []
+                'optional' => []
             ]
         ]
     ],
