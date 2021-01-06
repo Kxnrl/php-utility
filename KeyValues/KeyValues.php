@@ -47,15 +47,15 @@ function parseEntities(string $file, array $entities) : ?string {
             if (!in_array($key, $fieldName['entities']['optional'], true) && !in_array($key, $fieldName['entities']['require'], true)) {
                 return "EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
-            if (is_string($val) && preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+            if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
                 return "EntitiesParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             } else if (is_array($val)) {
                 foreach ($val as $k => $v) {
-                    if (is_string($v) && preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $v)) {
+                    if (is_string($v) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $v)) {
                         return "EntitiesParser: invalid symbol '$v' in '$section'." . PHP_EOL . 'file: ' . $file;
                     } else if (is_array($v)) {
                         foreach ($v as $_k => $_v) {
-                            if (is_string($val) && preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $_v)) {
+                            if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $_v)) {
                                 return "EntitiesParser: invalid symbol '$_v' in '$section'." . PHP_EOL . 'file: ' . $file;
                             }
                         }
@@ -120,7 +120,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!is_string($val)) {
                     return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-                if (preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
@@ -167,7 +167,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!is_string($val)) {
                     return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-                if (preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
@@ -230,7 +230,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!is_string($val)) {
                     return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-                if (preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
@@ -276,7 +276,7 @@ function parseTranslations(string $file, array $translations) : ?string {
             if (!is_string($val)) {
                 return "TranslationsParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
-            if (preg_match('/[￥/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+            if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
                 return "TranslationsParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
