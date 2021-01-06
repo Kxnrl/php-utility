@@ -48,6 +48,16 @@ function parseEntities(string $file, array $entities) : ?string {
                 return "EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
+
+        foreach ($entity as $key => $val) {
+            if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                return "EntitiesParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+            }
+        }
+
+        if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+            return "EntitiesParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
+        }
     }
 
     return null;
@@ -101,6 +111,14 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!in_array($key, $fieldName['BossHP']['optional']['breakable']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['breakable']['require'], true)) {
                     return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
+            }
+            foreach ($breakable as $key => $val) {
+                if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                }
+            }
+            if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+                return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
@@ -159,6 +177,14 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                     return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
+            foreach ($counter as $key => $val) {
+                if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                }
+            }
+            if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+                return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
+            }
         }
     }
 
@@ -197,6 +223,11 @@ function parseTranslations(string $file, array $translations) : ?string {
         foreach ($tran as $key => $val) {
             if (!in_array($key, $fieldName['Console_T']['optional'], true) && !in_array($key, $fieldName['Console_T']['require'], true)) {
                 return "TranslationsParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+            }
+        }
+        foreach ($tran as $key => $val) {
+            if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                return "TranslationsParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
@@ -238,6 +269,14 @@ function parseMapData(string $file, array $mapdata) : ?string {
                 return "MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
             }
         }
+        foreach ($data as $key => $val) {
+            if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                return "MapDataParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+            }
+        }
+        if (preg_match('/[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]/', $name)) {
+            return "MapDataParser: invalid symbol '$name' in '$name'." . PHP_EOL . 'file: ' . $file;
+        }
     }
 
     return null;
@@ -253,7 +292,7 @@ function KvParser(string $file) : ?array
     $text = file_get_contents($file);
 
     if(!is_string($text)) {
-        trigger_error("KvParser expects parameter 1 to be a string, " . gettype($text) . " given." . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+        trigger_error("KvParser expects parameter 1 to be a string, " . gettype($text) . " given." . PHP_EOL . 'file: ' . $file);
         return null;
     }
 
@@ -292,7 +331,7 @@ function KvParser(string $file) : ?array
         }
 
         if($expect_bracket) {
-            trigger_error("KvParser: invalid syntax, expected a '}' on line " . ($i+1) . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+            trigger_error("KvParser: invalid syntax, expected a '}' on line " . ($i+1) . PHP_EOL . 'file: ' . $file);
             return null;
         }
 
@@ -307,7 +346,7 @@ function KvParser(string $file) : ?array
             preg_match($re_keyvalue, $line, $m);
 
             if(!$m) {
-                trigger_error("KvParser: invalid syntax on line " . ($i+1) . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+                trigger_error("KvParser: invalid syntax on line " . ($i+1) . PHP_EOL . 'file: ' . $file);
                 return null;
             }
 
@@ -340,7 +379,7 @@ function KvParser(string $file) : ?array
     }
 
     if(count($stack) !== 1)  {
-        trigger_error("KvParser: open parentheses somewhere" . PHP_EOL . 'file: ' . $file, E_USER_NOTICE);
+        trigger_error("KvParser: open parentheses somewhere" . PHP_EOL . 'file: ' . $file);
         return null;
     }
 
@@ -352,6 +391,7 @@ set_error_handler('errorHandler');
 $listFile = new SplFileObject(__DIR__ . '/CI/KeyValues.list');
 $DirsList = [];
 $KeyValues = [];
+$invalidSymbolPattern = '[~！@#￥%……&*（）——+｛｝|：“《》？，。、；’【】、·]';
 
 while (!$listFile->eof()) {
 
@@ -442,7 +482,7 @@ foreach ($KeyValues as $kv) {
     $res = null;
 
     if (!is_array($array)) {
-        trigger_error("Failed to decode file [$kv] -> is_array (Array) return false.", E_USER_NOTICE);
+        trigger_error("Failed to decode file [$kv] -> is_array (Array) return false.");
         continue;
     } else if (isset($array['entities'])) {
         $res = parseEntities($local, $array['entities']);
