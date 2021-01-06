@@ -76,7 +76,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
 
         foreach ($BossHp['monster'] as $section => $monster) {
 
-            if (!is_array(monster)) {
+            if (!is_array($monster)) {
                 return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
             }
 
