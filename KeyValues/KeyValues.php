@@ -50,12 +50,12 @@ function parseEntities(string $file, array $entities) : ?string {
         }
 
         foreach ($entity as $key => $val) {
-            if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+            if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
                 return "EntitiesParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
 
-        if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+        if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
             return "EntitiesParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
         }
     }
@@ -113,11 +113,11 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 }
             }
             foreach ($breakable as $key => $val) {
-                if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
-            if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+            if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
                 return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
@@ -178,11 +178,11 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 }
             }
             foreach ($counter as $key => $val) {
-                if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+                if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
             }
-            if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
+            if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $section)) {
                 return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
@@ -226,7 +226,7 @@ function parseTranslations(string $file, array $translations) : ?string {
             }
         }
         foreach ($tran as $key => $val) {
-            if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+            if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
                 return "TranslationsParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
@@ -270,11 +270,11 @@ function parseMapData(string $file, array $mapdata) : ?string {
             }
         }
         foreach ($data as $key => $val) {
-            if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
+            if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $val)) {
                 return "MapDataParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
             }
         }
-        if (preg_match('/[！￥…*（）——+｛｝|：“《》？，。、；’【】、·]/', $name)) {
+        if (preg_match('/[！￥…（）——+｛｝|：“《》？，。、；’【】、·]/', $name)) {
             return "MapDataParser: invalid symbol '$name' in '$name'." . PHP_EOL . 'file: ' . $file;
         }
     }
