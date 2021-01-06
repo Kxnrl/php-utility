@@ -47,16 +47,9 @@ function parseEntities(string $file, array $entities) : ?string {
             if (!in_array($key, $fieldName['entities']['optional'], true) && !in_array($key, $fieldName['entities']['require'], true)) {
                 return "EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
-        }
-
-        foreach ($entity as $key => $val) {
             if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
                 return "EntitiesParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
-        }
-
-        if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $section)) {
-            return "EntitiesParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
         }
     }
 
@@ -73,6 +66,51 @@ function parseBossHp(string $file, array $BossHp) : ?string {
 
     $uniqueBreakable = [];
     $uniqueCounter = [];
+    $uniqueMonster = [];
+
+    if (isset($BossHp['monster'])) {
+
+        if (!is_array($BossHp['monster'])) {
+            return "BossHpParser: monster is not an array." . PHP_EOL . 'file: ' . $file;
+        }
+
+        foreach ($BossHp['monster'] as $section => $monster) {
+
+            if (!is_array(monster)) {
+                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+            }
+
+            // iterator unique
+            if (in_array($monster['hammerid'], $uniqueMonster, true)) {
+                return "BossHpParser: key '$section' has duplicate hammerid value '". $monster['hammerid'] ."'." . PHP_EOL . 'file: ' . $file;
+            }
+            $uniqueMonster[] = $monster['hammerid'];
+
+            // foreach key
+            $totalKeys = 0;
+            // check requires
+            foreach ($monster as $key => $val) {
+                if (in_array($key, $fieldName['BossHP']['optional']['monster']['require'], true)) {
+                    $totalKeys++;
+                }
+            }
+            if (count($fieldName['BossHP']['optional']['monster']['require']) != $totalKeys) {
+                foreach ($fieldName['BossHP']['optional']['breakable']['require'] as $key) {
+                    if (!isset($monster[$key])) {
+                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    }
+                }
+            }
+            foreach ($monster as $key => $val) {
+                if (!in_array($key, $fieldName['BossHP']['optional']['monster']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['monster']['require'], true)) {
+                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                }
+                if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
+                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                }
+            }
+        }
+    }
 
     if (isset($BossHp['breakable'])) {
 
@@ -111,14 +149,9 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!in_array($key, $fieldName['BossHP']['optional']['breakable']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['breakable']['require'], true)) {
                     return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-            }
-            foreach ($breakable as $key => $val) {
                 if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-            }
-            if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $section)) {
-                return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
@@ -176,14 +209,9 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 if (!in_array($key, $fieldName['BossHP']['optional']['counter']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['counter']['require'], true)) {
                     return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-            }
-            foreach ($counter as $key => $val) {
                 if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
                     return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
                 }
-            }
-            if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $section)) {
-                return "BossHpParser: invalid symbol '$section' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
         }
     }
@@ -224,8 +252,6 @@ function parseTranslations(string $file, array $translations) : ?string {
             if (!in_array($key, $fieldName['Console_T']['optional'], true) && !in_array($key, $fieldName['Console_T']['require'], true)) {
                 return "TranslationsParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
-        }
-        foreach ($tran as $key => $val) {
             if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
                 return "TranslationsParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
             }
@@ -268,14 +294,9 @@ function parseMapData(string $file, array $mapdata) : ?string {
             if (!in_array($key, $fieldName['MapData']['optional'], true) && !in_array($key, $fieldName['MapData']['require'], true)) {
                 return "MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
             }
-        }
-        foreach ($data as $key => $val) {
             if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $val)) {
                 return "MapDataParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
             }
-        }
-        if (preg_match('/[！￥…（）——｛｝：“《》？，。、；’【】、·]/', $name)) {
-            return "MapDataParser: invalid symbol '$name' in '$name'." . PHP_EOL . 'file: ' . $file;
         }
     }
 
