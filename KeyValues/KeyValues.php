@@ -490,7 +490,7 @@ $fieldName = [
                     'iterator'
                 ],
                 'optional' => [
-                    'backup', 'counter', 'displayname', 'countermode', 'multiparts'
+                    'backup', 'counter', 'displayname', 'countermode', 'multiparts', 'hitbox'
                 ]
             ],
             'breakable' => [
