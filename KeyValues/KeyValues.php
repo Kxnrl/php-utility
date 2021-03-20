@@ -593,7 +593,7 @@ foreach ($KeyValues as $kv) {
     } else if (isset($array['MapData'])) {
         $res = parseMapData($local, $array['MapData']);
     } else if (isset($array['Buttons'])) {
-        $res = parseButtons($local, $array['MapData']);
+        $res = parseButtons($local, $array['Buttons']);
     }
 
     if ($res !== null) {
