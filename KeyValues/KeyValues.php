@@ -330,6 +330,51 @@ function parseMapData(string $file, array $mapdata) : ?string {
     return null;
 }
 
+function parseButtons(string $file, array $buttons) : ?string {
+
+    if (!is_array($buttons)) {
+        return "ButtonsParser: Buttons is not an array." . PHP_EOL . 'file: ' . $file;
+    }
+
+    global $fieldName;
+
+    foreach ($buttons as $name => $data) {
+
+        if (!is_array($data)) {
+            return "ButtonsParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file;
+        }
+
+        // foreach key
+        $totalKeys = 0;
+        // check requires
+        foreach ($data as $key => $val) {
+            if (in_array($key, $fieldName['Buttons']['require'], true)) {
+                $totalKeys++;
+            }
+        }
+        if (count($fieldName['Buttons']['require']) != $totalKeys) {
+            foreach ($fieldName['Buttons']['require'] as $key) {
+                if (!isset($data[$key])) {
+                    return "ButtonsParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+                }
+            }
+        }
+        foreach ($data as $key => $val) {
+            if (!in_array($key, $fieldName['Buttons']['optional'], true) && !in_array($key, $fieldName['Buttons']['require'], true)) {
+                return "ButtonsParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+            }
+            if (!is_string($val)) {
+                return "ButtonsParser: invalid struct '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+            }
+            if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】、·！]/xu', $val)) {
+                return "ButtonsParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+            }
+        }
+    }
+
+    return null;
+}
+
 // a simple parser for Valve's KeyValue format
 // https://developer.valvesoftware.com/wiki/KeyValues
 //
@@ -516,6 +561,14 @@ $fieldName = [
         'optional' => [
             'm_RefundRatio'
         ]
+    ],
+    'Buttons' => [
+        'require' => [
+            'id', 'mode', 'name'
+        ],
+        'optional' = [
+            'cd'
+        ]
     ]
 ];
 
@@ -539,6 +592,8 @@ foreach ($KeyValues as $kv) {
         $res = parseBossHp($local, $array['BossHP']);
     } else if (isset($array['MapData'])) {
         $res = parseMapData($local, $array['MapData']);
+    } else if (isset($array['Buttons'])) {
+        $res = parseButtons($local, $array['MapData']);
     }
 
     if ($res !== null) {
