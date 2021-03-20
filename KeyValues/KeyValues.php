@@ -566,7 +566,7 @@ $fieldName = [
         'require' => [
             'id', 'mode', 'name'
         ],
-        'optional' = [
+        'optional' => [
             'cd'
         ]
     ]
