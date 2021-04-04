@@ -16,7 +16,7 @@ function errorHandler(int $errno , string $error) : bool {
 function parseEntities(string $file, array $entities) : ?string {
 
     if (!is_array($entities)) {
-        return "EntitiesParser: entities is not an array." . PHP_EOL . 'file: ' . $file;
+        return "EntitiesParser: entities is not an array.";
     }
 
     global $fieldName;
@@ -24,7 +24,7 @@ function parseEntities(string $file, array $entities) : ?string {
     foreach ($entities as $section => $entity) {
 
         if (!is_array($entity)) {
-            return "EntitiesParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+            return "EntitiesParser: key '$section' is not an array.";
         }
 
         // foreach key
@@ -38,25 +38,25 @@ function parseEntities(string $file, array $entities) : ?string {
         if (count($fieldName['entities']['require']) != $totalKeys) {
             foreach ($fieldName['entities']['require'] as $key) {
                 if (!isset($entity[$key])) {
-                    return "EntitiesParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "EntitiesParser: missing filed '$key' in '$section'.";
                 }
             }
         }
 
         foreach ($entity as $key => $val) {
             if (!in_array($key, $fieldName['entities']['optional'], true) && !in_array($key, $fieldName['entities']['require'], true)) {
-                return "EntitiesParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                return "EntitiesParser: redundant filed '$key' in '$section'.";
             }
             if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                return "EntitiesParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                return "EntitiesParser: invalid symbol '$val' in '$section'.";
             } else if (is_array($val)) {
                 foreach ($val as $k => $v) {
                     if (is_string($v) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $v)) {
-                        return "EntitiesParser: invalid symbol '$v' in '$section'." . PHP_EOL . 'file: ' . $file;
+                        return "EntitiesParser: invalid symbol '$v' in '$section'.";
                     } else if (is_array($v)) {
                         foreach ($v as $_k => $_v) {
                             if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $_v)) {
-                                return "EntitiesParser: invalid symbol '$_v' in '$section'." . PHP_EOL . 'file: ' . $file;
+                                return "EntitiesParser: invalid symbol '$_v' in '$section'.";
                             }
                         }
                     }
@@ -71,7 +71,7 @@ function parseEntities(string $file, array $entities) : ?string {
 function parseBossHp(string $file, array $BossHp) : ?string {
 
     if (!is_array($BossHp)) {
-        return "BossHpParser: entities is not an array." . PHP_EOL . 'file: ' . $file;
+        return "BossHpParser: entities is not an array.";
     }
 
     global $fieldName;
@@ -83,18 +83,18 @@ function parseBossHp(string $file, array $BossHp) : ?string {
     if (isset($BossHp['monster'])) {
 
         if (!is_array($BossHp['monster'])) {
-            return "BossHpParser: monster is not an array." . PHP_EOL . 'file: ' . $file;
+            return "BossHpParser: monster is not an array.";
         }
 
         foreach ($BossHp['monster'] as $section => $monster) {
 
             if (!is_array($monster)) {
-                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' is not an array.";
             }
 
             // iterator unique
             if (in_array($monster['hammerid'], $uniqueMonster, true)) {
-                return "BossHpParser: key '$section' has duplicate hammerid value '". $monster['hammerid'] ."'." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' has duplicate hammerid value '". $monster['hammerid'] ."'.";
             }
             $uniqueMonster[] = $monster['hammerid'];
 
@@ -109,19 +109,19 @@ function parseBossHp(string $file, array $BossHp) : ?string {
             if (count($fieldName['BossHP']['optional']['monster']['require']) != $totalKeys) {
                 foreach ($fieldName['BossHP']['optional']['breakable']['require'] as $key) {
                     if (!isset($monster[$key])) {
-                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                        return "BossHpParser: missing filed '$key' in '$section'.";
                     }
                 }
             }
             foreach ($monster as $key => $val) {
                 if (!in_array($key, $fieldName['BossHP']['optional']['monster']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['monster']['require'], true)) {
-                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: redundant filed '$key' in '$section'.";
                 }
                 if (!is_string($val)) {
-                    return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid struct '$val' in '$section'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid symbol '$val' in '$section'.";
                 }
             }
         }
@@ -130,18 +130,18 @@ function parseBossHp(string $file, array $BossHp) : ?string {
     if (isset($BossHp['breakable'])) {
 
         if (!is_array($BossHp['breakable'])) {
-            return "BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file;
+            return "BossHpParser: breakable is not an array.";
         }
 
         foreach ($BossHp['breakable'] as $section => $breakable) {
 
             if (!is_array($breakable)) {
-                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' is not an array.";
             }
 
             // iterator unique
             if (in_array($breakable['targetname'], $uniqueBreakable, true)) {
-                return "BossHpParser: key '$section' has duplicate targetname value '". $breakable['targetname'] ."'." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' has duplicate targetname value '". $breakable['targetname'] ."'.";
             }
             $uniqueBreakable[] = $breakable['targetname'];
 
@@ -156,19 +156,19 @@ function parseBossHp(string $file, array $BossHp) : ?string {
             if (count($fieldName['BossHP']['optional']['breakable']['require']) != $totalKeys) {
                 foreach ($fieldName['BossHP']['optional']['breakable']['require'] as $key) {
                     if (!isset($breakable[$key])) {
-                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                        return "BossHpParser: missing filed '$key' in '$section'.";
                     }
                 }
             }
             foreach ($breakable as $key => $val) {
                 if (!in_array($key, $fieldName['BossHP']['optional']['breakable']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['breakable']['require'], true)) {
-                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: redundant filed '$key' in '$section'.";
                 }
                 if (!is_string($val)) {
-                    return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid struct '$val' in '$section'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid symbol '$val' in '$section'.";
                 }
             }
         }
@@ -177,25 +177,25 @@ function parseBossHp(string $file, array $BossHp) : ?string {
     if (isset($BossHp['counter'])) {
 
         if (!is_array($BossHp['counter'])) {
-            return "BossHpParser: breakable is not an array." . PHP_EOL . 'file: ' . $file;
+            return "BossHpParser: breakable is not an array.";
         }
 
         foreach ($BossHp['counter'] as $section => $counter) {
 
             if (!is_array($counter)) {
-                return "BossHpParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' is not an array.";
             }
 
             // iterator unique
             if (in_array($counter['iterator'], $uniqueCounter, true)) {
-                return "BossHpParser: key '$section' has duplicate iterator value '". $counter['iterator'] ."'." . PHP_EOL . 'file: ' . $file;
+                return "BossHpParser: key '$section' has duplicate iterator value '". $counter['iterator'] ."'.";
             }
             $uniqueCounter[] = $counter['iterator'];
 
             // counter unique
             if (isset($counter['counter']) && strlen($counter['counter']) > 2) {
                 if (in_array($counter['counter'], $uniqueCounter, true)) {
-                    return "BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: key '$section' has duplicate counter value '". $counter['counter'] ."'.";
                 }
                 $uniqueCounter[] = $counter['counter'];
             }
@@ -203,7 +203,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
             // backup unique
             if (isset($counter['backup']) && strlen($counter['backup']) > 2) {
                 if (in_array($counter['backup'], $uniqueCounter, true)) {
-                    return "BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: key '$section' has duplicate backup value '". $counter['backup'] ."'.";
                 }
                 $uniqueCounter[] = $counter['backup'];
             }
@@ -219,19 +219,19 @@ function parseBossHp(string $file, array $BossHp) : ?string {
             if (count($fieldName['BossHP']['optional']['counter']['require']) != $totalKeys) {
                 foreach ($fieldName['BossHP']['optional']['counter']['require'] as $key) {
                     if (!isset($counter[$key])) {
-                        return "BossHpParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                        return "BossHpParser: missing filed '$key' in '$section'.";
                     }
                 }
             }
             foreach ($counter as $key => $val) {
                 if (!in_array($key, $fieldName['BossHP']['optional']['counter']['optional'], true) && !in_array($key, $fieldName['BossHP']['optional']['counter']['require'], true)) {
-                    return "BossHpParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: redundant filed '$key' in '$section'.";
                 }
                 if (!is_string($val)) {
-                    return "BossHpParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid struct '$val' in '$section'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "BossHpParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "BossHpParser: invalid symbol '$val' in '$section'.";
                 }
             }
         }
@@ -243,7 +243,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
 function parseTranslations(string $file, array $translations) : ?string {
 
     if (!is_array($translations)) {
-        return "TranslationsParser: translations is not an array." . PHP_EOL . 'file: ' . $file;
+        return "TranslationsParser: translations is not an array.";
     }
 
     global $fieldName;
@@ -251,7 +251,7 @@ function parseTranslations(string $file, array $translations) : ?string {
     foreach ($translations as $section => $tran) {
 
         if (!is_array($tran)) {
-            return "TranslationsParser: key '$section' is not an array." . PHP_EOL . 'file: ' . $file;
+            return "TranslationsParser: key '$section' is not an array.";
         }
 
         // foreach key
@@ -265,19 +265,19 @@ function parseTranslations(string $file, array $translations) : ?string {
         if (count($fieldName['Console_T']['require']) != $totalKeys) {
             foreach ($fieldName['Console_T']['require'] as $key) {
                 if (!isset($tran[$key])) {
-                    return "TranslationsParser: missing filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                    return "TranslationsParser: missing filed '$key' in '$section'.";
                 }
             }
         }
         foreach ($tran as $key => $val) {
             if (!in_array($key, $fieldName['Console_T']['optional'], true) && !in_array($key, $fieldName['Console_T']['require'], true)) {
-                return "TranslationsParser: redundant filed '$key' in '$section'." . PHP_EOL . 'file: ' . $file;
+                return "TranslationsParser: redundant filed '$key' in '$section'.";
             }
             if (!is_string($val)) {
-                return "TranslationsParser: invalid struct '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                return "TranslationsParser: invalid struct '$val' in '$section'.";
             }
             if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！%]/xu', $val)) {
-                return "TranslationsParser: invalid symbol '$val' in '$section'." . PHP_EOL . 'file: ' . $file;
+                return "TranslationsParser: invalid symbol '$val' in '$section'.";
             }
         }
     }
@@ -288,7 +288,7 @@ function parseTranslations(string $file, array $translations) : ?string {
 function parseMapData(string $file, array $mapdata) : ?string {
 
     if (!is_array($mapdata)) {
-        return "MapDataParser: MapData is not an array." . PHP_EOL . 'file: ' . $file;
+        return "MapDataParser: MapData is not an array.";
     }
 
     global $fieldName;
@@ -296,7 +296,7 @@ function parseMapData(string $file, array $mapdata) : ?string {
     foreach ($mapdata as $name => $data) {
 
         if (!is_array($data)) {
-            return "MapDataParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file;
+            return "MapDataParser: key '$name' is not an array.";
         }
 
         // foreach key
@@ -310,19 +310,19 @@ function parseMapData(string $file, array $mapdata) : ?string {
         if (count($fieldName['MapData']['require']) != $totalKeys) {
             foreach ($fieldName['MapData']['require'] as $key) {
                 if (!isset($data[$key])) {
-                    return "MapDataParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+                    return "MapDataParser: missing filed '$key' in '$name'.";
                 }
             }
         }
         foreach ($data as $key => $val) {
             if (!in_array($key, $fieldName['MapData']['optional'], true) && !in_array($key, $fieldName['MapData']['require'], true)) {
-                return "MapDataParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "MapDataParser: redundant filed '$key' in '$name'.";
             }
             if (!is_string($val)) {
-                return "MapDataParser: invalid struct '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "MapDataParser: invalid struct '$val' in '$name'.";
             }
             if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                return "MapDataParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "MapDataParser: invalid symbol '$val' in '$name'.";
             }
         }
     }
@@ -333,7 +333,7 @@ function parseMapData(string $file, array $mapdata) : ?string {
 function parseButtons(string $file, array $buttons) : ?string {
 
     if (!is_array($buttons)) {
-        return "ButtonsParser: Buttons is not an array." . PHP_EOL . 'file: ' . $file;
+        return "ButtonsParser: Buttons is not an array.";
     }
 
     global $fieldName;
@@ -341,7 +341,7 @@ function parseButtons(string $file, array $buttons) : ?string {
     foreach ($buttons as $name => $data) {
 
         if (!is_array($data)) {
-            return "ButtonsParser: key '$name' is not an array." . PHP_EOL . 'file: ' . $file;
+            return "ButtonsParser: key '$name' is not an array.";
         }
 
         // foreach key
@@ -355,19 +355,19 @@ function parseButtons(string $file, array $buttons) : ?string {
         if (count($fieldName['Buttons']['require']) != $totalKeys) {
             foreach ($fieldName['Buttons']['require'] as $key) {
                 if (!isset($data[$key])) {
-                    return "ButtonsParser: missing filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+                    return "ButtonsParser: missing filed '$key' in '$name'.";
                 }
             }
         }
         foreach ($data as $key => $val) {
             if (!in_array($key, $fieldName['Buttons']['optional'], true) && !in_array($key, $fieldName['Buttons']['require'], true)) {
-                return "ButtonsParser: redundant filed '$key' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "ButtonsParser: redundant filed '$key' in '$name'.";
             }
             if (!is_string($val)) {
-                return "ButtonsParser: invalid struct '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "ButtonsParser: invalid struct '$val' in '$name'.";
             }
             if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                return "ButtonsParser: invalid symbol '$val' in '$name'." . PHP_EOL . 'file: ' . $file;
+                return "ButtonsParser: invalid symbol '$val' in '$name'.";
             }
         }
     }
