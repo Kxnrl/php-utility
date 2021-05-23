@@ -524,7 +524,7 @@ $fieldName = [
             'chi'
         ],
         'optional' => [
-            'command', 'blocked'
+            'command', 'blocked', "countdown"
         ]
     ],
     'BossHP' => [
