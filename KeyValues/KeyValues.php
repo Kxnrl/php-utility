@@ -330,6 +330,51 @@ function parseMapData(string $file, array $mapdata) : ?string {
     return null;
 }
 
+function parseMapStage(string $file, array $mapstage) : ?string {
+
+    if (!is_array($mapstage)) {
+        return "MapStageParser: MapStage is not an array.";
+    }
+
+    global $fieldName;
+
+    foreach ($mapstage as $name => $data) {
+
+        if (!is_array($data)) {
+            return "MapStageParser: key '$name' is not an array.";
+        }
+
+        // foreach key
+        $totalKeys = 0;
+        // check requires
+        foreach ($data as $key => $val) {
+            if (in_array($key, $fieldName['MapStage']['require'], true)) {
+                $totalKeys++;
+            }
+        }
+        if (count($fieldName['MapStage']['require']) != $totalKeys) {
+            foreach ($fieldName['MapStage']['require'] as $key) {
+                if (!isset($data[$key])) {
+                    return "MapStageParser: missing filed '$key' in '$name'.";
+                }
+            }
+        }
+        foreach ($data as $key => $val) {
+            if (!in_array($key, $fieldName['MapStage']['optional'], true) && !in_array($key, $fieldName['MapStage']['require'], true)) {
+                return "MapStageParser: redundant filed '$key' in '$name'.";
+            }
+            if (!is_string($val)) {
+                return "MapStageParser: invalid struct '$val' in '$name'.";
+            }
+            if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
+                return "MapStageParser: invalid symbol '$val' in '$name'.";
+            }
+        }
+    }
+
+    return null;
+}
+
 function parseButtons(string $file, array $buttons) : ?string {
 
     if (!is_array($buttons)) {
@@ -562,6 +607,11 @@ $fieldName = [
             'm_RefundRatio'
         ]
     ],
+    'MapStage' => [
+        'require' => [
+            'stages', 'extreme', 'exstart'
+        ]
+    ],
     'Buttons' => [
         'require' => [
             'id', 'mode', 'name'
@@ -592,6 +642,8 @@ foreach ($KeyValues as $kv) {
         $res = parseBossHp($local, $array['BossHP']);
     } else if (isset($array['MapData'])) {
         $res = parseMapData($local, $array['MapData']);
+    } else if (isset($array['MapStage'])) {
+        $res = parseMapStage($local, $array['MapStage']);
     } else if (isset($array['Buttons'])) {
         $res = parseButtons($local, $array['Buttons']);
     }
