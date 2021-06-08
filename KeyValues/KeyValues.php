@@ -610,6 +610,9 @@ $fieldName = [
     'MapStage' => [
         'require' => [
             'stages', 'extreme', 'exstart'
+        ],
+        'optional' => [
+            
         ]
     ],
     'Buttons' => [
