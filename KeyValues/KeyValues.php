@@ -609,10 +609,10 @@ $fieldName = [
     ],
     'MapStage' => [
         'require' => [
-            'stages', 'extreme', 'exstart'
+            'stages', 'extreme'
         ],
         'optional' => [
-            
+            'exstart'
         ]
     ],
     'Buttons' => [
