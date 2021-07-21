@@ -13,7 +13,7 @@ function errorHandler(int $errno , string $error) : bool {
     exit(1);
 }
 
-function parseEntities(string $file, array $entities) : ?string {
+function parseEntities(array $entities) : ?string {
 
     if (!is_array($entities)) {
         return "EntitiesParser: entities is not an array.";
@@ -50,11 +50,11 @@ function parseEntities(string $file, array $entities) : ?string {
             if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
                 return "EntitiesParser: invalid symbol '$val' in '$section'.";
             } else if (is_array($val)) {
-                foreach ($val as $k => $v) {
+                foreach ($val as $v) {
                     if (is_string($v) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $v)) {
                         return "EntitiesParser: invalid symbol '$v' in '$section'.";
                     } else if (is_array($v)) {
-                        foreach ($v as $_k => $_v) {
+                        foreach ($v as $_v) {
                             if (is_string($val) && preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $_v)) {
                                 return "EntitiesParser: invalid symbol '$_v' in '$section'.";
                             }
@@ -68,7 +68,7 @@ function parseEntities(string $file, array $entities) : ?string {
     return null;
 }
 
-function parseBossHp(string $file, array $BossHp) : ?string {
+function parseBossHp(array $BossHp) : ?string {
 
     if (!is_array($BossHp)) {
         return "BossHpParser: entities is not an array.";
@@ -107,7 +107,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
                 }
             }
             if (count($fieldName['BossHP']['optional']['monster']['require']) != $totalKeys) {
-                foreach ($fieldName['BossHP']['optional']['breakable']['require'] as $key) {
+                foreach ($fieldName['BossHP']['optional']['monster']['require'] as $key) {
                     if (!isset($monster[$key])) {
                         return "BossHpParser: missing filed '$key' in '$section'.";
                     }
@@ -240,7 +240,7 @@ function parseBossHp(string $file, array $BossHp) : ?string {
     return null;
 }
 
-function parseTranslations(string $file, array $translations) : ?string {
+function parseTranslations(array $translations) : ?string {
 
     if (!is_array($translations)) {
         return "TranslationsParser: translations is not an array.";
@@ -285,7 +285,7 @@ function parseTranslations(string $file, array $translations) : ?string {
     return null;
 }
 
-function parseMapData(string $file, array $mapdata) : ?string {
+function parseMapData(array $mapdata) : ?string {
 
     if (!is_array($mapdata)) {
         return "MapDataParser: MapData is not an array.";
@@ -330,7 +330,7 @@ function parseMapData(string $file, array $mapdata) : ?string {
     return null;
 }
 
-function parseMapStage(string $file, array $mapstage) : ?string {
+function parseMapStage(array $mapstage) : ?string {
 
     if (!is_array($mapstage)) {
         return "MapStageParser: MapStage is not an array.";
@@ -375,7 +375,7 @@ function parseMapStage(string $file, array $mapstage) : ?string {
     return null;
 }
 
-function parseButtons(string $file, array $buttons) : ?string {
+function parseButtons(array $buttons) : ?string {
 
     if (!is_array($buttons)) {
         return "ButtonsParser: Buttons is not an array.";
@@ -413,6 +413,101 @@ function parseButtons(string $file, array $buttons) : ?string {
             }
             if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
                 return "ButtonsParser: invalid symbol '$val' in '$name'.";
+            }
+        }
+    }
+
+    return null;
+}
+
+function parseAwards(array $Awards) : ?string {
+
+    if (!is_array($Awards)) {
+        return "AwardsParser: entities is not an array.";
+    }
+
+    global $fieldName;
+
+    if (isset($Awards['tp'])) {
+
+        if (!is_array($Awards['tp'])) {
+            return "AwardsParser: tp is not an array.";
+        }
+
+        foreach ($Awards['tp'] as $section => $tp) {
+
+            if (!is_array($tp)) {
+                return "AwardsParser: key '$section' is not an array.";
+            }
+
+            // foreach key
+            $totalKeys = 0;
+            // check requires
+            foreach ($tp as $key => $val) {
+                if (in_array($key, $fieldName['Awards']['optional']['tp']['require'], true)) {
+                    $totalKeys++;
+                }
+            }
+            if (count($fieldName['Awards']['optional']['tp']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['optional']['tp']['require'] as $key) {
+                    if (!isset($monster[$key])) {
+                        return "AwardsParser: missing filed '$key' in '$section'.";
+                    }
+                }
+            }
+
+            foreach ($tp as $key => $val) {
+                if (!in_array($key, $fieldName['Awards']['optional']['tp']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['tp']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                }
+                if (!is_string($val)) {
+                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                }
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
+                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                }
+            }
+        }
+    }
+
+    if (isset($Awards['pro'])) {
+
+        if (!is_array($Awards['pro'])) {
+            return "AwardsParser: pro is not an array.";
+        }
+
+        foreach ($Awards['tp'] as $section => $pro) {
+
+            if (!is_array($pro)) {
+                return "AwardsParser: key '$section' is not an array.";
+            }
+
+            // foreach key
+            $totalKeys = 0;
+            // check requires
+            foreach ($pro as $key => $val) {
+                if (in_array($key, $fieldName['Awards']['optional']['pro']['require'], true)) {
+                    $totalKeys++;
+                }
+            }
+            if (count($fieldName['Awards']['optional']['pro']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['optional']['pro']['require'] as $key) {
+                    if (!isset($monster[$key])) {
+                        return "AwardsParser: missing filed '$key' in '$section'.";
+                    }
+                }
+            }
+
+            foreach ($pro as $key => $val) {
+                if (!in_array($key, $fieldName['Awards']['optional']['pro']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['pro']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                }
+                if (!is_string($val)) {
+                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                }
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
+                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                }
             }
         }
     }
@@ -622,6 +717,23 @@ $fieldName = [
         'optional' => [
             'cd'
         ]
+    ],
+    'Awards' => [
+        'require' => [],
+        'optional' => [
+            'tp' => [
+                'require' => [
+                    'max', 'ptr'
+                ],
+                'optional' => []
+            ],
+            'pro' => [
+                'require' => [
+                    'max', 'ptr'
+                ],
+                'optional' => []
+            ]
+        ]
     ]
 ];
 
@@ -638,17 +750,19 @@ foreach ($KeyValues as $kv) {
         trigger_error("Failed to decode file [$kv] -> is_array (Array) return false.");
         continue;
     } else if (isset($array['entities'])) {
-        $res = parseEntities($local, $array['entities']);
+        $res = parseEntities($array['entities']);
     } else if (isset($array['Console_T'])) {
-        $res = parseTranslations($local, $array['Console_T']);
+        $res = parseTranslations($array['Console_T']);
     } else if (isset($array['BossHP'])) {
-        $res = parseBossHp($local, $array['BossHP']);
+        $res = parseBossHp($array['BossHP']);
     } else if (isset($array['MapData'])) {
-        $res = parseMapData($local, $array['MapData']);
+        $res = parseMapData($array['MapData']);
     } else if (isset($array['MapStage'])) {
-        $res = parseMapStage($local, $array['MapStage']);
+        $res = parseMapStage($array['MapStage']);
     } else if (isset($array['Buttons'])) {
-        $res = parseButtons($local, $array['Buttons']);
+        $res = parseButtons($array['Buttons']);
+    } else if (isset($array['Awards'])) {
+        $res = parseAwards($array['Awards']);
     }
 
     if ($res !== null) {
