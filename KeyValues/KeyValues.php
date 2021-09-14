@@ -476,7 +476,7 @@ function parseAwards(array $Awards) : ?string {
             return "AwardsParser: pro is not an array.";
         }
 
-        foreach ($Awards['tp'] as $section => $pro) {
+        foreach ($Awards['pro'] as $section => $pro) {
 
             if (!is_array($pro)) {
                 return "AwardsParser: key '$section' is not an array.";
@@ -500,6 +500,90 @@ function parseAwards(array $Awards) : ?string {
 
             foreach ($pro as $key => $val) {
                 if (!in_array($key, $fieldName['Awards']['optional']['pro']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['pro']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                }
+                if (!is_string($val)) {
+                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                }
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
+                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                }
+            }
+        }
+    }
+
+    if (isset($Awards['bhop'])) {
+
+        if (!is_array($Awards['bhop'])) {
+            return "AwardsParser: pro is not an array.";
+        }
+
+        foreach ($Awards['bhop'] as $section => $bhop) {
+
+            if (!is_array($bhop)) {
+                return "AwardsParser: key '$section' is not an array.";
+            }
+
+            // foreach key
+            $totalKeys = 0;
+            // check requires
+            foreach ($bhop as $key => $val) {
+                if (in_array($key, $fieldName['Awards']['optional']['bhop']['require'], true)) {
+                    $totalKeys++;
+                }
+            }
+            if (count($fieldName['Awards']['optional']['bhop']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['optional']['bhop']['require'] as $key) {
+                    if (!isset($monster[$key])) {
+                        return "AwardsParser: missing filed '$key' in '$section'.";
+                    }
+                }
+            }
+
+            foreach ($bhop as $key => $val) {
+                if (!in_array($key, $fieldName['Awards']['optional']['bhop']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['bhop']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                }
+                if (!is_string($val)) {
+                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                }
+                if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
+                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                }
+            }
+        }
+    }
+
+    if (isset($Awards['surf'])) {
+
+        if (!is_array($Awards['surf'])) {
+            return "AwardsParser: pro is not an array.";
+        }
+
+        foreach ($Awards['surf'] as $section => $surf) {
+
+            if (!is_array($surf)) {
+                return "AwardsParser: key '$section' is not an array.";
+            }
+
+            // foreach key
+            $totalKeys = 0;
+            // check requires
+            foreach ($surf as $key => $val) {
+                if (in_array($key, $fieldName['Awards']['optional']['surf']['require'], true)) {
+                    $totalKeys++;
+                }
+            }
+            if (count($fieldName['Awards']['optional']['surf']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['optional']['surf']['require'] as $key) {
+                    if (!isset($monster[$key])) {
+                        return "AwardsParser: missing filed '$key' in '$section'.";
+                    }
+                }
+            }
+
+            foreach ($surf as $key => $val) {
+                if (!in_array($key, $fieldName['Awards']['optional']['surf']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['surf']['require'], true)) {
                     return "AwardsParser: redundant filed '$key' in '$section'.";
                 }
                 if (!is_string($val)) {
@@ -699,7 +783,7 @@ $fieldName = [
             'm_Description', 'm_CertainTimes', 'm_Price', 'm_PricePartyBlock', 'm_MinPlayers', 'm_MaxPlayers', 'm_MaxCooldown', 'm_NominateOnly', 'm_VipOnly', 'm_AdminOnly'
         ],
         'optional' => [
-            'm_RefundRatio'
+            'm_RefundRatio', 'm_Difficulty'
         ]
     ],
     'MapStage' => [
@@ -728,6 +812,18 @@ $fieldName = [
                 'optional' => []
             ],
             'pro' => [
+                'require' => [
+                    'max', 'ptr'
+                ],
+                'optional' => []
+            ],
+            'bhop' => [
+                'require' => [
+                    'max', 'ptr'
+                ],
+                'optional' => []
+            ],
+            'surf' => [
                 'require' => [
                     'max', 'ptr'
                 ],
