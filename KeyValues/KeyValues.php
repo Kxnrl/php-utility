@@ -705,7 +705,7 @@ function KvParser(string $file) : ?array
 
 set_error_handler('errorHandler');
 
-$listFile = new SplFileObject(__DIR__ . '/CI/KeyValues.list');
+$listFile = new SplFileObject(__DIR__ . '/__CI/KeyValues.list');
 $DirsList = [];
 $KeyValues = [];
 
