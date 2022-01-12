@@ -43,6 +43,20 @@ function parseEntities(array $entities) : ?string {
             }
         }
 
+        if (stripos($entity['name'], "zm") !== false) {
+            return "EntitiesParser: invalid symbol '{$entity['name']}' in '$section'.";
+        }
+        if (stripos($entity['shortname'], "zm") !== false) {
+            return "EntitiesParser: invalid symbol '{$entity['shortname']}' in '$section'.";
+        }
+
+        if (preg_match('/[0-9]+/uix', $entity['name'])) {
+            return "EntitiesParser: invalid symbol '{$entity['name']}' in '$section'.";
+        }
+        if (preg_match('/[0-9]+/uix', $entity['shortname'])) {
+            return "EntitiesParser: invalid symbol '{$entity['shortname']}' in '$section'.";
+        }
+
         foreach ($entity as $key => $val) {
             if (!in_array($key, $fieldName['entities']['optional'], true) && !in_array($key, $fieldName['entities']['require'], true)) {
                 return "EntitiesParser: redundant filed '$key' in '$section'.";
