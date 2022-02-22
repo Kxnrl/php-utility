@@ -722,12 +722,13 @@ set_error_handler('errorHandler');
 $listFile = new SplFileObject(__DIR__ . '/__CI/KeyValues.list');
 $DirsList = [];
 $KeyValues = [];
+$errorReports = [];
 
 while (!$listFile->eof()) {
 
     $path = trim($listFile->fgets());
-    $ext = pathinfo(__DIR__ . 'KeyValues.php/' . $path, PATHINFO_EXTENSION);
-    if ($ext == 'kv' || $ext == 'vdf') {
+    $ext = pathinfo(__DIR__ . '/' . $path, PATHINFO_EXTENSION);
+    if ($ext == 'kv') {
         // this is kv file
         $KeyValues[] = $path;
     } else {
@@ -743,7 +744,17 @@ foreach ($DirsList as $dir) {
         if ($file == '.' || $file == '..') {
             continue;
         }
-        $KeyValues[] = $dir . '/' . $file;
+        $_path = $dir . '/' . $file;
+        $KeyValues[] = $_path;
+
+        $info = pathinfo($_path, PATHINFO_BASENAME);
+
+        if (preg_match('/[A-Z]/', $info)) {
+            $errorReports[] = [
+                'file' => $_path,
+                'errs' => 'uppercase file name of \''.$_path.'\''
+            ];
+        }
     }
 }
 
@@ -846,8 +857,6 @@ $fieldName = [
         ]
     ]
 ];
-
-$errorReports = [];
 
 foreach ($KeyValues as $kv) {
 
