@@ -481,177 +481,169 @@ function parseButtons(array $buttons) : ?string {
 function parseAwards(array $Awards) : ?string {
 
     if (!is_array($Awards)) {
-        return "AwardsParser: entities is not an array.";
+        return "AwardsParser: awards is not an array.";
     }
 
     global $fieldName;
 
-    if (isset($Awards['tp'])) {
+    foreach ($Awards as $name => $data) {
 
-        if (!is_array($Awards['tp'])) {
-            return "AwardsParser: tp is not an array.";
+        if (!is_array($data)) {
+            return "AwardsParser: key '$name' is not an array.";
         }
 
-        foreach ($Awards['tp'] as $section => $tp) {
+        if (preg_match('/[A-Z]/', $name)) {
+            return "AwardsParser: key '$name' is not an lowercase key.";
+        }
+
+        if (isset($data['tp'])) {
+
+            $tp = $data['tp'];
 
             if (!is_array($tp)) {
-                return "AwardsParser: key '$section' is not an array.";
+                return "AwardsParser: tp is not an array.";
             }
 
             // foreach key
             $totalKeys = 0;
             // check requires
             foreach ($tp as $key => $val) {
-                if (in_array($key, $fieldName['Awards']['optional']['tp']['require'], true)) {
+                if (in_array($key, $fieldName['Awards']['require'], true)) {
                     $totalKeys++;
                 }
             }
-            if (count($fieldName['Awards']['optional']['tp']['require']) != $totalKeys) {
-                foreach ($fieldName['Awards']['optional']['tp']['require'] as $key) {
+            if (count($fieldName['Awards']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['require'] as $key) {
                     if (!isset($monster[$key])) {
-                        return "AwardsParser: missing filed '$key' in '$section'.";
+                        return "AwardsParser: missing filed '$key' in '$name'.";
                     }
                 }
             }
 
             foreach ($tp as $key => $val) {
-                if (!in_array($key, $fieldName['Awards']['optional']['tp']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['tp']['require'], true)) {
-                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                if (!in_array($key, $fieldName['Awards']['optional'], true) && !in_array($key, $fieldName['Awards']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$name'.";
                 }
                 if (!is_string($val)) {
-                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                    return "AwardsParser: invalid struct '$val' in '$name'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                    return "AwardsParser: invalid symbol '$val' in '$name'.";
                 }
             }
         }
-    }
 
-    if (isset($Awards['pro'])) {
+        if (isset($data['pro'])) {
 
-        if (!is_array($Awards['pro'])) {
-            return "AwardsParser: pro is not an array.";
-        }
+            $pro = $data['pro'];
 
-        foreach ($Awards['pro'] as $section => $pro) {
-
-            if (!is_array($pro)) {
-                return "AwardsParser: key '$section' is not an array.";
+            if (!is_array($data['pro'])) {
+                return "AwardsParser: pro is not an array.";
             }
 
             // foreach key
             $totalKeys = 0;
             // check requires
             foreach ($pro as $key => $val) {
-                if (in_array($key, $fieldName['Awards']['optional']['pro']['require'], true)) {
+                if (in_array($key, $fieldName['Awards']['require'], true)) {
                     $totalKeys++;
                 }
             }
-            if (count($fieldName['Awards']['optional']['pro']['require']) != $totalKeys) {
-                foreach ($fieldName['Awards']['optional']['pro']['require'] as $key) {
+            if (count($fieldName['Awards']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['require'] as $key) {
                     if (!isset($monster[$key])) {
-                        return "AwardsParser: missing filed '$key' in '$section'.";
+                        return "AwardsParser: missing filed '$key' in '$name'.";
                     }
                 }
             }
 
             foreach ($pro as $key => $val) {
-                if (!in_array($key, $fieldName['Awards']['optional']['pro']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['pro']['require'], true)) {
-                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                if (!in_array($key, $fieldName['Awards']['optional'], true) && !in_array($key, $fieldName['Awards']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$name'.";
                 }
                 if (!is_string($val)) {
-                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                    return "AwardsParser: invalid struct '$val' in '$name'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                    return "AwardsParser: invalid symbol '$val' in '$name'.";
                 }
             }
         }
-    }
 
-    if (isset($Awards['bhop'])) {
+        if (isset($data['bhop'])) {
 
-        if (!is_array($Awards['bhop'])) {
-            return "AwardsParser: pro is not an array.";
-        }
-
-        foreach ($Awards['bhop'] as $section => $bhop) {
+            $bhop = $data['bhop'];
 
             if (!is_array($bhop)) {
-                return "AwardsParser: key '$section' is not an array.";
+                return "AwardsParser: bhop is not an array.";
             }
 
             // foreach key
             $totalKeys = 0;
             // check requires
             foreach ($bhop as $key => $val) {
-                if (in_array($key, $fieldName['Awards']['optional']['bhop']['require'], true)) {
+                if (in_array($key, $fieldName['Awards']['require'], true)) {
                     $totalKeys++;
                 }
             }
-            if (count($fieldName['Awards']['optional']['bhop']['require']) != $totalKeys) {
+            if (count($fieldName['Awards']['require']) != $totalKeys) {
                 foreach ($fieldName['Awards']['optional']['bhop']['require'] as $key) {
                     if (!isset($monster[$key])) {
-                        return "AwardsParser: missing filed '$key' in '$section'.";
+                        return "AwardsParser: missing filed '$key' in '$name'.";
                     }
                 }
             }
 
             foreach ($bhop as $key => $val) {
-                if (!in_array($key, $fieldName['Awards']['optional']['bhop']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['bhop']['require'], true)) {
-                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                if (!in_array($key, $fieldName['Awards']['optional'], true) && !in_array($key, $fieldName['Awards']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$name'.";
                 }
                 if (!is_string($val)) {
-                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                    return "AwardsParser: invalid struct '$val' in '$name'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                    return "AwardsParser: invalid symbol '$val' in '$name'.";
                 }
             }
         }
-    }
 
-    if (isset($Awards['surf'])) {
+        if (isset($data['surf'])) {
 
-        if (!is_array($Awards['surf'])) {
-            return "AwardsParser: pro is not an array.";
-        }
-
-        foreach ($Awards['surf'] as $section => $surf) {
+            $surf = $data['surf'];
 
             if (!is_array($surf)) {
-                return "AwardsParser: key '$section' is not an array.";
+                return "AwardsParser: surf is not an array.";
             }
 
             // foreach key
             $totalKeys = 0;
             // check requires
             foreach ($surf as $key => $val) {
-                if (in_array($key, $fieldName['Awards']['optional']['surf']['require'], true)) {
+                if (in_array($key, $fieldName['Awards']['require'], true)) {
                     $totalKeys++;
                 }
             }
-            if (count($fieldName['Awards']['optional']['surf']['require']) != $totalKeys) {
-                foreach ($fieldName['Awards']['optional']['surf']['require'] as $key) {
+            if (count($fieldName['Awards']['require']) != $totalKeys) {
+                foreach ($fieldName['Awards']['require'] as $key) {
                     if (!isset($monster[$key])) {
-                        return "AwardsParser: missing filed '$key' in '$section'.";
+                        return "AwardsParser: missing filed '$key' in '$name'.";
                     }
                 }
             }
 
             foreach ($surf as $key => $val) {
-                if (!in_array($key, $fieldName['Awards']['optional']['surf']['optional'], true) && !in_array($key, $fieldName['Awards']['optional']['surf']['require'], true)) {
-                    return "AwardsParser: redundant filed '$key' in '$section'.";
+                if (!in_array($key, $fieldName['Awards']['optional'], true) && !in_array($key, $fieldName['Awards']['require'], true)) {
+                    return "AwardsParser: redundant filed '$key' in '$name'.";
                 }
                 if (!is_string($val)) {
-                    return "AwardsParser: invalid struct '$val' in '$section'.";
+                    return "AwardsParser: invalid struct '$val' in '$name'.";
                 }
                 if (preg_match('/[￥…（）—｛｝：“《》？，。、；’【】·！]/xu', $val)) {
-                    return "AwardsParser: invalid symbol '$val' in '$section'.";
+                    return "AwardsParser: invalid symbol '$val' in '$name'.";
                 }
             }
         }
+
     }
 
     return null;
@@ -874,33 +866,10 @@ $fieldName = [
         ]
     ],
     'Awards' => [
-        'require' => [],
-        'optional' => [
-            'tp' => [
-                'require' => [
-                    'max', 'ptr'
-                ],
-                'optional' => []
-            ],
-            'pro' => [
-                'require' => [
-                    'max', 'ptr'
-                ],
-                'optional' => []
-            ],
-            'bhop' => [
-                'require' => [
-                    'max', 'ptr'
-                ],
-                'optional' => []
-            ],
-            'surf' => [
-                'require' => [
-                    'max', 'ptr'
-                ],
-                'optional' => []
-            ]
-        ]
+        'require' => [
+            'max', 'ptr'
+        ],
+        'optional' => []
     ]
 ];
 
