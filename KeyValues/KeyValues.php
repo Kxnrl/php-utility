@@ -13,6 +13,42 @@ function errorHandler(int $errno , string $error) : bool {
     exit(1);
 }
 
+function checkFileIndentation(string $file) : int {
+    $fp = new SplFileObject($file);
+    $ln = 0;
+    while (!$fp->eof()) {
+        $ln++;
+        $rt = $fp->fgets();
+        if (strstr($rt, "\t") !== false)
+            return $ln;
+    }
+    return -1;
+}
+
+function checkDuplicateKey(string $file, $level = 1) : ?string {
+    $fp = new SplFileObject($file);
+    $kk = [];
+    $pf = str_repeat('    ', $level);
+    $ef = str_repeat('    ', $level - 1) . "}";
+    while (!$fp->eof()) {
+        $rt = $fp->fgets();
+        $rc = strncmp($rt, $ef.'}', ($level-1)*4+1);
+        if ($rc == 0) {
+            $kk = [];
+            continue;
+        }
+        $mt = strncmp($rt, $pf.'"', $level*4+1);
+        if ($mt == 0) {
+            $vv = trim($rt);
+            if (in_array($vv, $kk)) {
+                return "duplicate key: [" . str_replace('"', "", $vv) . "]";
+            }
+            $kk[] = $vv;
+        }
+    }
+    return null;
+}
+
 function parseEntities(array $entities) : ?string {
 
     if (!is_array($entities)) {
@@ -313,6 +349,10 @@ function parseMapData(array $mapdata) : ?string {
             return "MapDataParser: key '$name' is not an array.";
         }
 
+        if (preg_match('/[A-Z]/', $name)) {
+            return "MapDataParser: key '$name' is not an lowercase key.";
+        }
+
         // foreach key
         $totalKeys = 0;
         // check requires
@@ -356,6 +396,10 @@ function parseMapStage(array $mapstage) : ?string {
 
         if (!is_array($data)) {
             return "MapStageParser: key '$name' is not an array.";
+        }
+
+        if (preg_match('/[A-Z]/', $name)) {
+            return "MapStageParser: key '$name' is not an lowercase key.";
         }
 
         // foreach key
@@ -762,10 +806,10 @@ $validated = 0;
 $fieldName = [
     'entities' => [
         'require' => [
-            'name', 'shortname', 'buttonclass', 'filtername', 'hasfiltername', 'hammerid', 'mode', 'glow', 'hud', 'autotransfer', 'maxuses', 'cooldown', 'maxamount'
+            'name', 'shortname', 'team', 'buttonclass', 'filtername', 'hasfiltername', 'hammerid', 'mode', 'maxamount'
         ],
         'optional' => [
-            'startcd', 'triggerid', 'containerid', 'isWall', 'level', 'children', 'team', 'holy'
+            'cooldown', 'maxuses', 'startcd', 'triggerid', 'containerid', 'isWall', 'level', 'children', 'holy', 'glow', 'hud', 'autotransfer'
         ]
     ],
     'Console_T' => [
@@ -797,9 +841,11 @@ $fieldName = [
             ],
             'monster' => [
                 'require' => [
-                    'displayname', 'hammerid'
+                    'hammerid'
                 ],
-                'optional' => []
+                'optional' => [
+                    'displayname'
+                ]
             ]
         ]
     ],
@@ -865,23 +911,74 @@ foreach ($KeyValues as $kv) {
 
     $res = null;
 
+    // todo: check key exists and duplicate
+
     if (!is_array($array)) {
         trigger_error("Failed to decode file [$kv] -> is_array (Array) return false.");
         continue;
     } else if (isset($array['entities'])) {
-        $res = parseEntities($array['entities']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseEntities($array['entities']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     } else if (isset($array['Console_T'])) {
-        $res = parseTranslations($array['Console_T']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseTranslations($array['Console_T']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     } else if (isset($array['BossHP'])) {
-        $res = parseBossHp($array['BossHP']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseBossHp($array['BossHP']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local, 2);
     } else if (isset($array['MapData'])) {
-        $res = parseMapData($array['MapData']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseMapData($array['MapData']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     } else if (isset($array['MapStage'])) {
-        $res = parseMapStage($array['MapStage']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseMapStage($array['MapStage']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     } else if (isset($array['Buttons'])) {
-        $res = parseButtons($array['Buttons']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseButtons($array['Buttons']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     } else if (isset($array['Awards'])) {
-        $res = parseAwards($array['Awards']);
+        $line = checkFileIndentation($local);
+        if ($line == -1) {
+            $res = parseAwards($array['Awards']);
+        } else {
+            $res = "loose indentation at line: " . $line;
+        }
+        if ($res == null)
+            $res = checkDuplicateKey($local);
     }
 
     if ($res !== null) {
