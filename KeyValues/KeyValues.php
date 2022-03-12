@@ -809,7 +809,7 @@ $fieldName = [
             'chi'
         ],
         'optional' => [
-            'command', 'blocked', "countdown"
+            'command', 'blocked', "countdown", "notimer"
         ]
     ],
     'BossHP' => [
