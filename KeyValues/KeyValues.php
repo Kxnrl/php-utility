@@ -805,11 +805,9 @@ $fieldName = [
         ]
     ],
     'Console_T' => [
-        'require' => [
-            'chi'
-        ],
+        'require' => [],
         'optional' => [
-            'command', 'blocked', "countdown", "notimer"
+            'chi', 'blocked', 'notimer', 'cleartext', 'cleartimer', 'countdown'
         ]
     ],
     'BossHP' => [
