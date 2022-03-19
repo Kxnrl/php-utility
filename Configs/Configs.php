@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+$version = 'v3';
+
 $configs = [
     'Commands' => [
         'echo', 'zr_class_modify'
@@ -161,6 +163,9 @@ function checkConfig(string $_text) : ?string {
 }
 
 function checkFile(string $path) : ?array {
+    global $version;
+    $zcfg = strstr($path, "ZombiEscape") !== false;
+    $name = pathinfo($path, PATHINFO_FILENAME);
     $file = new SplFileObject($path);
     $line = 0;
     while (!$file->eof()) {
@@ -173,6 +178,39 @@ function checkFile(string $path) : ?array {
                 'line' => $line,
                 'resp' => $resp
             ];
+        }
+
+        if ($zcfg) {
+            if ($line == 2) {
+                if (strncmp($text, "// ConVars and Commands for ", 28) != 0) {
+                    return [
+                        'line' => 2,
+                        'resp' => 'Missing config identity header.'
+                    ];
+                }
+                $temp = trim(substr($text, 28));
+                if (strcmp($temp, $name) != 0) {
+                    return [
+                        'line' => 2,
+                        'resp' => 'Different identity.'
+                    ];
+                }
+            }
+            if ($line == 3) {
+                if (strncmp($text, "// Config Version ", 18) != 0) {
+                    return [
+                        'line' => 3,
+                        'resp' => 'Missing config versioning header.'
+                    ];
+                }
+                $temp = trim(substr($text, 18));
+                if (strcmp($temp, $version) != 0) {
+                    return [
+                        'line' => 3,
+                        'resp' => 'Different version.'
+                    ];
+                }
+            }
         }
     }
     return null;
