@@ -1,12 +1,19 @@
 <?php
 
 declare(strict_types=1);
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '384M');
 
 // Taken from https://github.com/Kxnrl/N0vaDesktop-Extractor/blob/master/N0vaDesktopExtractor/Program.cs#L135
 function getJpgInfo($path) : ?array {
+    $size = filesize($path);
+    if ($size === false || $size >= 500 * 1024) {
+        return [
+            'height' => -1,
+            'width' => -1
+        ];
+    }
     $file = fopen($path, 'rb');
-    $resp = fread($file, filesize($path));
+    $resp = fread($file, $size);
     $pack = unpack("C*", $resp);
     $data = [];
     foreach ($pack as $byte) {
@@ -54,8 +61,15 @@ function getJpgInfo($path) : ?array {
 
 // Taken from https://github.com/Kxnrl/N0vaDesktop-Extractor/blob/master/N0vaDesktopExtractor/Program.cs#L127
 function getPngInfo($path) : ?array {
+    $size = filesize($path);
+    if ($size === false || $size >= 500 * 1024) {
+        return [
+            'height' => -1,
+            'width' => -1
+        ];
+    }
     $file = fopen($path, 'rb');
-    $resp = fread($file, filesize($path));
+    $resp = fread($file, $size);
     $pack = unpack("C*", $resp);
     $data = [];
     foreach ($pack as $byte) {
@@ -89,7 +103,6 @@ function checkFile($path) : ?string {
 
     if ($resx['width'] == 1280 && $resx['height'] == 720)
         return null;
-
 
     return "Invalid resolution ({$resx['width']} * {$resx['height']})";
 }
