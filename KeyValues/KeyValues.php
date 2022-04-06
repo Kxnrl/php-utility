@@ -304,6 +304,12 @@ function parseTranslations(array $translations) : ?string {
             return "TranslationsParser: key '$section' is not an array.";
         }
 
+        if (is_string($section)) {
+            if (strcmp($section, trim($section)) != 0) {
+                return "TranslationsParser: key '$section' has except whitespace.";
+            }
+        }
+
         // foreach key
         $totalKeys = 0;
         // check requires
@@ -353,6 +359,10 @@ function parseMapData(array $mapdata) : ?string {
             return "MapDataParser: key '$name' is not an lowercase key.";
         }
 
+        if (strcmp($name, trim($name)) != 0) {
+            return "MapDataParser: key '$name' has except whitespace.";
+        }
+
         // foreach key
         $totalKeys = 0;
         // check requires
@@ -400,6 +410,10 @@ function parseMapStage(array $mapstage) : ?string {
 
         if (preg_match('/[A-Z]/', $name)) {
             return "MapStageParser: key '$name' is not an lowercase key.";
+        }
+
+        if (strcmp($name, trim($name)) != 0) {
+            return "AwardsParser: key '$name' has except whitespace.";
         }
 
         // foreach key
@@ -494,6 +508,10 @@ function parseAwards(array $Awards) : ?string {
 
         if (preg_match('/[A-Z]/', $name)) {
             return "AwardsParser: key '$name' is not an lowercase key.";
+        }
+
+        if (strcmp($name, trim($name)) != 0) {
+            return "AwardsParser: key '$name' has except whitespace.";
         }
 
         if (isset($data['tp'])) {
