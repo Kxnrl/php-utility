@@ -773,7 +773,7 @@ function KvParser(string $file) : ?array
 
 set_error_handler('errorHandler');
 
-$listFile = new SplFileObject(__DIR__ . '/__CI/KeyValues.list');
+$listFile = new SplFileObject(__DIR__ . '/.fys/ci/KeyValues.list');
 $DirsList = [];
 $KeyValues = [];
 $errorReports = [];

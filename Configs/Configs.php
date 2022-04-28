@@ -94,7 +94,7 @@ $configs = [
     ],
 ];
 
-$listFile = new SplFileObject(__DIR__ . '/__CI/Configs.list');
+$listFile = new SplFileObject(__DIR__ . '/.fys/ci/Configs.list');
 $DirsList = [];
 $FileList = [];
 $validated = 0;

@@ -107,7 +107,7 @@ function checkFile($path) : ?string {
     return "Invalid resolution ({$resx['width']} * {$resx['height']})";
 }
 
-$listFile = new SplFileObject(__DIR__ . '/__CI/Images.list');
+$listFile = new SplFileObject(__DIR__ . '/.fys/ci/Images.list');
 $DirsList = [];
 $FileList = [];
 $validated = 0;
