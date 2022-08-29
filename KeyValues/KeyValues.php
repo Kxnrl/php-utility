@@ -29,17 +29,19 @@ function checkDuplicateKey(string $file, $level = 1) : ?string {
     $fp = new SplFileObject($file);
     $kk = [];
     $pf = str_repeat('    ', $level);
-    $ef = str_repeat('    ', $level - 1) . "}";
+    $ef = $level == 1 ? "}" : str_repeat('    ', $level - 1) . "}";
+    $ln = 0;
     while (!$fp->eof()) {
         $rt = $fp->fgets();
-        $rc = strncmp($rt, $ef.'}', ($level-1)*4+1);
+        $ln++;
+        $rc = strncasecmp($rt, $ef.'}', ($level-1)*4+1);
         if ($rc == 0) {
             $kk = [];
             continue;
         }
-        $mt = strncmp($rt, $pf.'"', $level*4+1);
+        $mt = strncasecmp($rt, $pf.'"', $level*4+1);
         if ($mt == 0) {
-            $vv = trim($rt);
+            $vv = strtolower(trim($rt));
             if (in_array($vv, $kk)) {
                 return "duplicate key: [" . str_replace('"', "", $vv) . "]";
             }
