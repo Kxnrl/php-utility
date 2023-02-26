@@ -6,7 +6,7 @@ ini_set('memory_limit', '384M');
 // Taken from https://github.com/Kxnrl/N0vaDesktop-Extractor/blob/master/N0vaDesktopExtractor/Program.cs#L135
 function getJpgInfo($path) : ?array {
     $size = filesize($path);
-    if ($size === false || $size >= 500 * 1024) {
+    if ($size === false || $size >= 300 * 1024) {
         return [
             'height' => -1,
             'width' => -1

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$version = 'v3';
+$version = 'v4';
 
 $configs = [
     'Commands' => [
@@ -17,6 +17,13 @@ $configs = [
 
         'store_thirdperson_enabled' => ['max' => 1.0, 'min' => 0.0],
 
+        'mapmusic_min_length' => ['max' => 30.0, 'min' => 0.0],
+
+        'entwatch_allow_use_to_acquire' => ['max' => 1.0, 'min' => 0.0],
+        'entwatch_auto_detect_physicsbox' => ['max' => 1.0, 'min' => 0.0],
+
+        'ze_start_health_override' => ['max'=> 1000.0, 'min'=> 0.0],
+
         'ze_infection_sort_by_keephuman_desc' => ['max' => 1.0, 'min' => 0.0],
         'zr_infect_mzombie_ratio' => ['max' => 32.0, 'min' => 1.0],
         'zr_infect_mzombie_respawn' => ['max' => 1.0, 'min' => 0.0],
@@ -25,8 +32,8 @@ $configs = [
         'zr_knockback_multi' => ['max' => 1.5, 'min' => 0.1],
 
         'ze_damage_zombie_cash' => ['max' => 3.0, 'min' => 0.1],
-        'ze_damage_rank_points' => ['max' => 99999.0, 'min' => 5000.0],
-        'ze_damage_shop_credit' => ['max' => 99999.0, 'min' => 5000.0],
+        'ze_damage_rank_points' => ['max' => 99999.0, 'min' => 9999.0],
+        'ze_damage_shop_credit' => ['max' => 99999.0, 'min' => 9999.0],
         'ze_credits_pass_round' => ['max' => 30.0, 'min' => 1.0],
         'rank_ze_win_points_humans' => ['max' => 30.0, 'min' => 1.0],
 
@@ -34,7 +41,7 @@ $configs = [
         'ze_bosshp_vscript_creation' => ['max' => 1.0, 'min' => 0.0],
 
         'ze_newbee_protection_point' => ['max' => 100000.0, 'min' => 500.0],
-        'ze_entwatch_require_client' => ['max' => 1.0, 'min' => 0.0],
+        'entwatch_require_client' => ['max' => 1.0, 'min' => 0.0],
 
         'ze_buttons_glow_enabled' => ['max' => 1.0, 'min' => 0.0],
 
@@ -49,7 +56,7 @@ $configs = [
         'ze_grenade_nade_cfeffect' => ['max' => 3.0, 'min' => 0.0],
 
         'ze_weapons_awp_counts' => ['max' => 64.0, 'min' => 1.0],
-        'ze_weapons_spawn_hegrenade' => ['max' => 2.0, 'min' => 0.0],
+        'ze_weapons_spawn_hegrenade' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_molotov' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_decoy' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_round_hegrenade' => ['max' => 15.0, 'min' => -1.0],
@@ -58,6 +65,7 @@ $configs = [
         'ze_weapons_round_flash' => ['max' => 10.0, 'min' => -1.0],
         'ze_weapons_round_tagrenade' => ['max' => 5.0, 'min' => -1.0],
         'ze_weapons_round_healshot' => ['max' => 5.0, 'min' => -1.0],
+        'ze_weapons_round_smoke' => ['max' => 5.0, 'min' => -1.0],
 
         'sm_hunter_leappower' => ['max' => 500.0, 'min' => 150.0],
         'sm_faster_maxspeed' => ['max' => 2.0, 'min' => 1.1],
@@ -65,6 +73,10 @@ $configs = [
         'sm_smoker_distance' => ['max' => 9999.0, 'min' => 100.0],
         'sm_blader_damage' => ['max' => 5000.0, 'min' => 30.0],
         'sm_farter_distance' => ['max' => 9999.0, 'min' => 50.0],
+        'sm_finger_distance' => ['max' => 9999.9, 'min' => 150.0],
+        'sm_deimos_targetfx' => ['max' => 8.9, 'min' => 1.0],
+        'sm_deimos_droptype' => ['max' => 3.0, 'min' => 00],
+        'sm_coffin_radius' => ['max' => 9999.9, 'min' => 100.0],
 
         'sv_autobunnyhopping' => ['max' => 1.0, 'min' => 0.0],
         'sv_enablebunnyhopping' => ['max' => 1.0, 'min' => 0.0],
