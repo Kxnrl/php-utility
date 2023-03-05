@@ -25,6 +25,24 @@ function checkFileIndentation(string $file) : int {
     return -1;
 }
 
+function checkVersionHeader(string $file) : ?string {
+    $fp = new SplFileObject($file);
+    $ey = [];
+    while (!$fp->eof()) {
+        $rt = $fp->fgets();
+        $ey[] = $rt;
+    }
+
+    if (count($ey) > 3) {
+        if (strstr($ey[3], "Copyright 2023 Kyle 'Kxnrl' Frankiss") !== false)
+            return null;
+        if (strstr($ey[3], 'Copyright') !== false)
+            return 'Wrong version header';
+    }
+
+    return 'Missing version header';
+}
+
 function checkDuplicateKey(string $file, $level = 1) : ?string {
     $fp = new SplFileObject($file);
     $kk = [];
@@ -912,6 +930,8 @@ foreach ($KeyValues as $kv) {
         }
         if ($res == null)
             $res = checkDuplicateKey($local);
+        if ($res == null)
+            $res = checkVersionHeader($local);
     } else if (isset($array['Console_T'])) {
         $line = checkFileIndentation($local);
         if ($line == -1) {
@@ -921,6 +941,8 @@ foreach ($KeyValues as $kv) {
         }
         if ($res == null)
             $res = checkDuplicateKey($local);
+        if ($res == null)
+            $res = checkVersionHeader($local);
     } else if (isset($array['BossHP'])) {
         $line = checkFileIndentation($local);
         if ($line == -1) {
@@ -930,6 +952,8 @@ foreach ($KeyValues as $kv) {
         }
         if ($res == null)
             $res = checkDuplicateKey($local, 2);
+        if ($res == null)
+            $res = checkVersionHeader($local);
     } else if (isset($array['MapData'])) {
         $line = checkFileIndentation($local);
         if ($line == -1) {
