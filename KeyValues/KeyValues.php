@@ -898,7 +898,7 @@ $fieldName = [
             'id', 'mode', 'name', 'class', 'event'
         ],
         'optional' => [
-            'cd'
+            'cd', 'relay'
         ]
     ],
     'Awards' => [
