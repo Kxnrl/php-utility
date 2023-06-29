@@ -895,7 +895,7 @@ $fieldName = [
     ],
     'Buttons' => [
         'require' => [
-            'id', 'mode', 'name'
+            'id', 'mode', 'name', 'class', 'event'
         ],
         'optional' => [
             'cd'
