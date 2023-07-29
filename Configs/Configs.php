@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$version = 'v4';
+$version = 'v5';
 
 $configs = [
     'Commands' => [
@@ -30,6 +30,7 @@ $configs = [
         'zr_infect_spawntime_max' => ['max' => 90.0, 'min' => 0.0],
         'zr_infect_spawntime_min' => ['max' => 90.0, 'min' => 0.0],
         'zr_knockback_multi' => ['max' => 1.5, 'min' => 0.1],
+        'ze_protection_mzombie_distance' => ['max' => 10000.0, 'min' => 0.0],
 
         'ze_damage_zombie_cash' => ['max' => 3.0, 'min' => 0.1],
         'ze_damage_rank_points' => ['max' => 99999.0, 'min' => 9999.0],
@@ -59,13 +60,13 @@ $configs = [
         'ze_weapons_spawn_hegrenade' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_molotov' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_decoy' => ['max' => 1.0, 'min' => 0.0],
-        'ze_weapons_round_hegrenade' => ['max' => 15.0, 'min' => -1.0],
-        'ze_weapons_round_molotov' => ['max' => 10.0, 'min' => -1.0],
-        'ze_weapons_round_decoy' => ['max' => 10.0, 'min' => -1.0],
-        'ze_weapons_round_flash' => ['max' => 10.0, 'min' => -1.0],
-        'ze_weapons_round_tagrenade' => ['max' => 5.0, 'min' => -1.0],
-        'ze_weapons_round_healshot' => ['max' => 5.0, 'min' => -1.0],
-        'ze_weapons_round_smoke' => ['max' => 5.0, 'min' => -1.0],
+        'ze_weapons_round_hegrenade' => ['max' => 20.0, 'min' => -1.0],
+        'ze_weapons_round_molotov' => ['max' => 15.0, 'min' => -1.0],
+        'ze_weapons_round_decoy' => ['max' => 15.0, 'min' => -1.0],
+        'ze_weapons_round_flash' => ['max' => 12.0, 'min' => -1.0],
+        'ze_weapons_round_tagrenade' => ['max' => 8.0, 'min' => -1.0],
+        'ze_weapons_round_healshot' => ['max' => 8.0, 'min' => -1.0],
+        'ze_weapons_round_smoke' => ['max' => 8.0, 'min' => -1.0],
 
         'sm_hunter_leappower' => ['max' => 500.0, 'min' => 150.0],
         'sm_faster_maxspeed' => ['max' => 2.0, 'min' => 1.1],
