@@ -57,6 +57,7 @@ $configs = [
         'ze_grenade_nade_cfeffect' => ['max' => 3.0, 'min' => 0.0],
 
         'ze_weapons_awp_counts' => ['max' => 64.0, 'min' => 1.0],
+        'ze_weapons_ssg_counts' => ['max' => 64.0, 'min' => 1.0],
         'ze_weapons_spawn_hegrenade' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_molotov' => ['max' => 1.0, 'min' => 0.0],
         'ze_weapons_spawn_decoy' => ['max' => 1.0, 'min' => 0.0],
